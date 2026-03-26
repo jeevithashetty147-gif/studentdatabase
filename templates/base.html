@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="hero">
+        <div class="hero__content">
+            <p class="eyebrow">Flask Student Database</p>
+            <h1>Student Manager</h1>
+            <p class="hero__text">Add students, browse the list, and search records instantly from a simple web dashboard.</p>
+            <nav class="nav">
+                <a href="{{ url_for('index') }}">Add Student</a>
+                <a href="{{ url_for('student_list') }}">View Students</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page">
+        {% if using_ephemeral_storage %}
+            <div class="alerts">
+                <div class="alert alert--warning">Vercel is using temporary SQLite storage. Set <code>DATABASE_URL</code> for persistent student records.</div>
+            </div>
+        {% endif %}
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alerts">
+                    {% for category, message in messages %}
+                        <div class="alert alert--{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
